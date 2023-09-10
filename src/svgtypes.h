@@ -671,6 +671,9 @@ namespace svg2b2d {
                     fExplicitNone = true;
                     set(true);
                 }
+                else if (cName == "currentColor") {
+                    set(false);
+                }
                 else if (svg::colors.contains(cName))
                 {
                     c = svg::colors[cName];

@@ -1547,10 +1547,10 @@ namespace svg2b2d {
 			//ctx.strokeJoin(SVG_JOIN_ROUND);
 			//ctx.ellipseMode(ELLIPSEMODE::CENTER);
 
-			ctx.setFillStyle(BLRgba32(0, 0, 0));
+			//ctx.setFillStyle(BLRgba32(0, 0, 0));
 			
-			ctx.setStrokeStyle(BLRgba32(0));
-			ctx.setStrokeWidth(1.0);
+			//ctx.setStrokeStyle(BLRgba32(0));
+			//ctx.setStrokeWidth(1.0);
 			//ctx.textSize(16);
 			
 			// Apply attributes that have been gathered
