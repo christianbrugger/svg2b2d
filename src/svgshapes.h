@@ -296,7 +296,24 @@ namespace svg2b2d {
 		
 		void drawSelf(IRender &ctx) override
 		{
-			ctx.fillPath(fPath);
+			// don't draw transparent fill styles so we can use BL_COMP_OP_SRC_OVER
+			auto transparent_fill = [&]{
+				auto style = BLVar {};
+				ctx.getFillStyle(style);
+				if (style.isRgba32()) {
+					auto color = BLRgba32 {};
+					style.toRgba32(&color);
+
+					if (color.a() == 0) {
+						return true;
+					}
+				}
+				return false;
+			}();
+
+			if (!transparent_fill) {
+				ctx.fillPath(fPath);
+			}
 			ctx.strokePath(fPath);
 		}
 	};
