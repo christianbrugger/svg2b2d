@@ -2,10 +2,7 @@
 
 #include "blend2d.h"
 
-struct IRender : BLContext
-{
-	IRender(BLImage& img) : BLContext(img) {}
-};
+using IRender = BLContext;
 
 // IDrawable
 // Base interface for anything that might have an effect
