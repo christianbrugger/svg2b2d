@@ -1381,7 +1381,7 @@ namespace svg2b2d
 
         void drawSelf(IRender& ctx) override
         {
-			ctx.transform(fTransform);
+			ctx.setTransform(fTransform);
         }
 
         static std::shared_ptr<SVGTransform> createFromChunk(IMapSVGNodes* root, const std::string& name, const ByteSpan& inChunk)

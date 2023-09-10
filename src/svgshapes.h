@@ -948,7 +948,7 @@ namespace svg2b2d {
 			{
 				auto  tform = SVGTransform::createFromXml(root(), "patternTransform", elem);
 				fTransform = tform->fTransform;
-				fPattern.setMatrix(fTransform);
+				fPattern.setTransform(fTransform);
 			}
 		}
 
@@ -1148,7 +1148,7 @@ namespace svg2b2d {
 			if (elem.getAttribute("gradientTransform"))
 			{
 				auto  tform = SVGTransform::createFromXml(root(), "gradientTransform", elem);
-				fGradient.setMatrix(tform->getTransform());
+				fGradient.setTransform(tform->getTransform());
 			}
 		}
 
@@ -1203,7 +1203,7 @@ namespace svg2b2d {
 			if (elem.getAttribute("gradientTransform"))
 			{
 				auto  tform = SVGTransform::createFromXml(root(), "gradientTransform", elem);
-				fGradient.setMatrix(tform->getTransform());
+				fGradient.setTransform(tform->getTransform());
 			}
 
 		}

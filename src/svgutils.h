@@ -5,10 +5,6 @@
 
 namespace svg2b2d
 {
-    // Determine at runtime if the CPU is little-endian (intel standard)
-    static constexpr bool isLE() noexcept { int i = 1; return (int)*((unsigned char*)&i) == 1; }
-    static constexpr bool isBE() noexcept { return !isLE(); }
-
     // Just a few useful routines
     static constexpr double radians(double a) { return a * 0.017453292519943295; }     // given degrees, return radians
     static constexpr double degrees(double a) { return a * 57.29577951308232; }        // given radians, return degrees
