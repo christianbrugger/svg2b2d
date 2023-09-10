@@ -183,7 +183,7 @@ namespace svg2b2d
     }
 
     /* Convert a binary memory block in a base64 null-terminated string. */
-    static char* bintob64(char* dest, void const* src, size_t size) {
+    static inline char* bintob64(char* dest, void const* src, size_t size) {
 
         typedef struct { unsigned char a; unsigned char b; unsigned char c; } block_t;
         block_t const* block = (block_t*)src;

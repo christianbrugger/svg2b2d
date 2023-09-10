@@ -173,14 +173,18 @@ namespace svg2b2d {
 
 		static inline ByteSpan& chunk_skip(ByteSpan& dc, ptrdiff_t n) noexcept
 		{
-			if (n > dc.size())
-				n = dc.size();
+			if (n > std::ssize(dc))
+				n = std::ssize(dc);
 			dc.fStart += n;
 
 			return dc;
 		}
 
-		static inline ByteSpan& chunk_skip_to_end(ByteSpan& dc) noexcept { dc.fStart = dc.fEnd; }
+		static inline ByteSpan& chunk_skip_to_end(ByteSpan& dc) noexcept
+		{ 
+			dc.fStart = dc.fEnd; 
+			return dc;
+		}
 
 
 

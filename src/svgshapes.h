@@ -151,20 +151,20 @@ namespace svg2b2d {
 		}
 		
 		// Contains styling attributes
-		void applyAttributes(IRender& ctx)
+		void applyAttributes(IRender& ctx) const
 		{
 			for (auto& prop : fVisualProperties) {
 				prop.second->draw(ctx);
 			}
 		}
 		
-		virtual void drawSelf(IRender& ctx)
+		virtual void drawSelf(IRender& ctx) const
 		{
 			;
 
 		}
 		
-		void draw(IRender& ctx) override
+		void draw(IRender& ctx) const override
 		{
 			ctx.save();
 			
@@ -231,7 +231,7 @@ namespace svg2b2d {
 
 		}
 
-		void drawSelf(IRender& ctx) override
+		void drawSelf(IRender& ctx) const override
 		{
 			if (fWrappedNode == nullptr)
 				return;
@@ -294,7 +294,7 @@ namespace svg2b2d {
 		SVGPathBasedShape(IMapSVGNodes* iMap) :SVGShape(iMap) {}
 		
 		
-		void drawSelf(IRender &ctx) override
+		void drawSelf(IRender &ctx) const override
 		{
 			// don't draw transparent fill styles so we can use BL_COMP_OP_SRC_OVER
 			auto transparent_fill = [&]{
@@ -523,6 +523,10 @@ namespace svg2b2d {
 			auto d = elem.getAttribute("d");
 			//auto success = blPathFromCommands(d, fPath);
 			auto success = parsePath(d, fPath);
+
+			if (!success) {
+				printf("parsePath incomplete");
+			}
 		}
 
 		static std::shared_ptr<SVGPath> createFromXml(IMapSVGNodes* iMap, const XmlElement& elem)
@@ -719,7 +723,7 @@ namespace svg2b2d {
 		}
 		
 		
-		void drawSelf(IRender& ctx)
+		void drawSelf(IRender& ctx) const
 		{
 			for (auto& node : fNodes) {
 				node->draw(ctx);
@@ -853,7 +857,7 @@ namespace svg2b2d {
 		SVGTextNode() :SVGCompoundNode() {}
 		SVGTextNode(IMapSVGNodes* root) :SVGCompoundNode(root) {}
 
-		void drawSelf(IRender& ctx) override
+		void drawSelf(IRender& ctx) const override
 		{
 			//ctx.textFont("Calibri");	// BUGBUG - hardcoded, should go away when property supported
 			//ctx.text(fText.c_str(), x, y+dy);
@@ -946,7 +950,7 @@ namespace svg2b2d {
 			return fVar;
 		}
 		
-		void drawSelf(IRender& ctx) override
+		void drawSelf(IRender& ctx) const override
 		{
 			// This should not be called
 			// a pattern is used as a fill for other visuals
@@ -1128,7 +1132,7 @@ namespace svg2b2d {
 				// Convert the variant color to a BLRgba32
 				BLVar aVar = c->getVariant();
 				uint32_t colorValue = 0;
-				auto res = blVarToRgba32(&aVar, &colorValue);
+				blVarToRgba32(&aVar, &colorValue);
 				BLRgba32 acolor(colorValue);
 
 				fGradient.addStop(offset, acolor);
@@ -1537,7 +1541,7 @@ namespace svg2b2d {
 			return node;
 		}
 
-		void draw(IRender& ctx) override
+		void draw(IRender& ctx) const override
 		{
 			ctx.save();
 
@@ -1596,7 +1600,7 @@ namespace svg2b2d {
 			return fRootNode->height();
 		}
 
-		void draw(IRender& ctx) override
+		void draw(IRender& ctx) const override
 		{
 			for (auto& shape : fShapes)
 			{

@@ -37,7 +37,7 @@ namespace svg2b2d {
 		SVGObject& operator=(const SVGObject& other) {
             fRoot = other.fRoot;
             fName = other.fName;
-			BLVar fVar = other.fVar;
+			fVar = BLVar{other.fVar};
             
             return *this;
 		}
@@ -60,7 +60,7 @@ namespace svg2b2d {
             return fVar;
         }
         
-        void draw(IRender& ctx) override
+        void draw(IRender& ctx) const override
         {
             ;// draw the object
         }
@@ -139,12 +139,12 @@ namespace svg2b2d {
         }
         
         // Apply propert to the context conditionally
-        virtual void drawSelf(IRender& ctx)
+        virtual void drawSelf(IRender& ctx) const
         {
             ;
         }
 
-        void draw(IRender& ctx) override
+        void draw(IRender& ctx) const override
         {
             if (isSet())
                 drawSelf(ctx);
@@ -199,7 +199,7 @@ namespace svg2b2d {
 		SVGOpacity(IMapSVGNodes* iMap):SVGVisualProperty(iMap){}
 
 
-        void drawSelf(IRender& ctx)
+        void drawSelf(IRender& ctx) const override
         {
 			SVGVisualProperty::drawSelf(ctx);
 			ctx.setFillAlpha(fValue);
@@ -247,7 +247,7 @@ namespace svg2b2d {
             return *this;
         }
 
-        void drawSelf(IRender& ctx)
+        void drawSelf(IRender& ctx) const override
         {
             //ctx.textSize(fValue);
         }
@@ -300,7 +300,7 @@ enum class ALIGNMENT : unsigned
             return *this;
         }
 
-        void drawSelf(IRender& ctx)
+        void drawSelf(IRender& ctx) const override
         {
             // BUGBUG, need to calculate alignment
             //ctx.textAlign(fValue, ALIGNMENT::BASELINE);
@@ -350,7 +350,7 @@ enum class ALIGNMENT : unsigned
             return *this;
         }
 
-        void drawSelf(IRender& ctx)
+        void drawSelf(IRender& ctx) const override
         {
 			// BUGBUG, need to calculate alignment
             //ctx.textAlign(fValue, ALIGNMENT::BASELINE);
@@ -459,7 +459,7 @@ namespace svg2b2d {
     {
         // skip past the leading "rgb("
         ByteSpan s = inChunk;
-        auto leading = chunk_token(s, "(");
+        auto leading [[maybe_unused]] = chunk_token(s, "(");
 
         // s should now point to the first number
         // and 'leading' should contain 'rgb'
@@ -513,7 +513,7 @@ namespace svg2b2d {
         return BLRgba32(rgbi[0], rgbi[1], rgbi[2]);
     }
 
-    static BLRgba32 parseColorName(const ByteSpan& inChunk)
+    static inline BLRgba32 parseColorName(const ByteSpan& inChunk)
     {
         std::string cName = std::string(inChunk.fStart, inChunk.fEnd);
 
@@ -575,7 +575,7 @@ namespace svg2b2d {
 
         // Need to distinguish which function gets called
         // BUGBUG
-        void drawSelf(IRender& ctx)
+        void drawSelf(IRender& ctx) const override
         {
             switch (fPaintFor)
             {
@@ -606,7 +606,7 @@ namespace svg2b2d {
             // so we need to skip past the 'url(#'
             // and then find the closing ')'
             // and then we have the id
-            auto url = chunk_token(str, "(");
+            auto url [[maybe_unused]] = chunk_token(str, "(");
             auto id = chunk_trim(chunk_token(str, ")"), wspChars);
 
             // The first character could be '.' or '#'
@@ -776,7 +776,7 @@ namespace svg2b2d {
             return *this;
         }
 
-        void drawSelf(IRender& ctx)
+        void drawSelf(IRender& ctx) const override
         {
 			ctx.setFillRule(fValue);
         }
@@ -833,7 +833,7 @@ namespace svg2b2d {
 			return *this;
 		}
 
-		void drawSelf(IRender& ctx)
+		void drawSelf(IRender& ctx) const override
 		{
 			ctx.setStrokeWidth(fWidth);
 		}
@@ -880,7 +880,7 @@ namespace svg2b2d {
 			return *this;
         }
 
-		void drawSelf(IRender& ctx)
+		void drawSelf(IRender& ctx) const override
 		{
 			ctx.setStrokeMiterLimit(fMiterLimit);
 		}
@@ -933,7 +933,7 @@ namespace svg2b2d {
 			return *this;
 		}
 
-		void drawSelf(IRender& ctx)
+		void drawSelf(IRender& ctx) const override
 		{
             ctx.setStrokeCaps(fLineCap);
 		}
@@ -989,7 +989,7 @@ namespace svg2b2d {
 			return *this;
         }
         
-        void drawSelf(IRender& ctx)
+        void drawSelf(IRender& ctx) const override
         {
 			ctx.setStrokeJoin(fLineJoin);
         }
@@ -1281,8 +1281,6 @@ namespace svg2b2d
     {
         double args[3]{ 0 };
         int na = 0;
-        float m[6]{ 0 };
-        float t[6]{ 0 };
         ByteSpan s = inChunk;
 
 		s = parseTransformArgs(s, args, 3, na);
@@ -1382,7 +1380,7 @@ namespace svg2b2d
 
 		}
 
-        void drawSelf(IRender& ctx) override
+        void drawSelf(IRender& ctx) const override
         {
 			ctx.setTransform(fTransform);
         }

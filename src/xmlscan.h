@@ -218,8 +218,8 @@ namespace svg2b2d {
         void scanTagName()
         {
             ByteSpan s = fData;
-            bool start = false;
-            bool end = false;
+            bool start [[maybe_unused]] = false;
+            bool end [[maybe_unused]] = false;
 
             // If the chunk is empty, just return
             if (!s)
@@ -261,7 +261,6 @@ namespace svg2b2d {
         {
 
             int nattr = 0;
-            bool start = false;
             bool end = false;
             uint8_t quote{};
             ByteSpan s = fData;

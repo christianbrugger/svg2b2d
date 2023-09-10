@@ -12,7 +12,7 @@ struct IDrawable
 {
     virtual ~IDrawable() {}
 
-    virtual void draw(IRender& ctx) = 0;
+    virtual void draw(IRender& ctx) const = 0;
 };
 
 struct SVGRenderer : public IRender

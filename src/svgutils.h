@@ -83,6 +83,8 @@ namespace svg2b2d
         {
             fValue = rhs.fValue;
             fUnits = rhs.fUnits;
+
+            return *this;
         }
         
         double value() const { return fValue; }
