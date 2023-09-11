@@ -59,7 +59,6 @@ namespace svg2b2d {
 		std::string fId{};      // The id of the element
 		std::map<std::string, std::shared_ptr<SVGVisualProperty>> fVisualProperties{};
 
-		SVGVisualNode() = default;
 		SVGVisualNode(IMapSVGNodes* root)
 			: SVGObject(root)
 		{
@@ -462,7 +461,7 @@ namespace svg2b2d {
 			auto pts = parsePoints(points);
 
 			fPath.moveTo(pts[0].x, pts[0].y);
-			for (int i = 1; i < pts.size(); i++)
+			for (int i = 1; i < std::ssize(pts); i++)
 			{
 				fPath.lineTo(pts[i].x, pts[i].y);
 			}
@@ -493,7 +492,7 @@ namespace svg2b2d {
 			auto pts = parsePoints(points);
 
 			fPath.moveTo(pts[0]);
-			for (int i = 1; i < pts.size(); i++)
+			for (int i = 1; i < std::ssize(pts); i++)
 			{
 				fPath.lineTo(pts[i]);
 			}
@@ -552,7 +551,7 @@ namespace svg2b2d {
 		// figure out what kind of encoding we're dealing with
 		// value starts with: 'data:image/png;base64,<base64 encoded image>
 		//
-		ByteSpan data = chunk_token(value, ":");
+		ByteSpan data [[maybe_unused]] = chunk_token(value, ":");
 		auto mime = chunk_token(value, ";");
 		auto encoding = chunk_token(value, ",");
 
@@ -621,7 +620,7 @@ namespace svg2b2d {
 			return fVar;
 		}
 		
-		void drawSelf(IRender& ctx)
+		void drawSelf(IRender& ctx) const override
 		{
 			if (fImage.empty())
 				return;
@@ -723,7 +722,7 @@ namespace svg2b2d {
 		}
 		
 		
-		void drawSelf(IRender& ctx) const
+		void drawSelf(IRender& ctx) const override
 		{
 			for (auto& node : fNodes) {
 				node->draw(ctx);
@@ -865,7 +864,7 @@ namespace svg2b2d {
 			SVGCompoundNode::drawSelf(ctx);
 		}
 		
-		virtual void loadSelfFromXml(const XmlElement& elem)
+		void loadSelfFromXml(const XmlElement& elem) override
 		{
 			SVGCompoundNode::loadSelfFromXml(elem);
 
@@ -913,7 +912,7 @@ namespace svg2b2d {
 		SVGStyleNode(IMapSVGNodes* root) :SVGCompoundNode(root) {}
 
 
-		virtual void loadSelfFromXml(const XmlElement& elem)
+		void loadSelfFromXml(const XmlElement& elem) override
 		{
 			SVGCompoundNode::loadSelfFromXml(elem);
 		}
@@ -957,7 +956,7 @@ namespace svg2b2d {
 			SVGCompoundNode::drawSelf(ctx);
 		}
 
-		virtual void loadSelfFromXml(const XmlElement& elem)
+		void loadSelfFromXml(const XmlElement& elem) override
 		{
 			SVGCompoundNode::loadSelfFromXml(elem);
 
@@ -1093,7 +1092,7 @@ namespace svg2b2d {
 		}
 		
 		
-		virtual void loadSelfClosingNode(const XmlElement& elem)
+		void loadSelfClosingNode(const XmlElement& elem) override
 		{
 			//printf("SVGGradientNode::loadSelfClosingNode()\n");
 			//ndt_debug::printXmlElement(elem);
@@ -1304,7 +1303,8 @@ namespace svg2b2d {
 
 		}
 
-		void addDefinition(const std::string& name, std::shared_ptr<SVGObject> obj)
+		void addDefinition(const std::string& name, std::shared_ptr<SVGObject> obj) 
+			override
 		{
 			if (fRoot == this)
 				fDefinitions[name] = obj;
@@ -1426,7 +1426,6 @@ namespace svg2b2d {
 		SVGViewbox fViewbox{};
 		bool fPreserveAspectRatio{ false };
 
-		SVGPortal() = default;
 		SVGPortal(IMapSVGNodes* root) : SVGVisualProperty(root) {}
 		
 
@@ -1444,7 +1443,7 @@ namespace svg2b2d {
 		double width() { return fWidth; }
 		double height() { return fHeight; }
 		
-		void drawSelf(IRender& ctx)
+		void drawSelf(IRender& ctx) const override
 		{
 			if (fViewbox.isSet())
 			{

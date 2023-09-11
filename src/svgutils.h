@@ -103,6 +103,9 @@ namespace svg2b2d
                 //case SVG_UNITS_EX:			return fValue * attr.fontSize * 0.52f; // x-height of Helvetica.
             case SVG_UNITS_PERCENT:	return orig + fValue / 100.0f * length;
 
+            // for now
+            case SVG_UNITS_EM: return fValue;
+            case SVG_UNITS_EX: return fValue;
             }
 
             return fValue;

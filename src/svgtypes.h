@@ -48,7 +48,7 @@ namespace svg2b2d {
         const std::string& name() const { return fName; }
         void setName(const std::string& name) { fName = name; }
 
-		const bool visible() const { return fIsVisible; }
+		bool visible() const { return fIsVisible; }
 		void setVisible(bool visible) { fIsVisible = visible; }
         
         const XmlElement& sourceElement() const { return fSourceElement; }
@@ -205,7 +205,7 @@ namespace svg2b2d {
 			ctx.setFillAlpha(fValue);
         }
 
-		void loadSelfFromChunk(const ByteSpan& inChunk)
+		void loadSelfFromChunk(const ByteSpan& inChunk) override
 		{
             fValue = parseDimension(inChunk).calculatePixels(1);
             set(true);
@@ -252,7 +252,7 @@ namespace svg2b2d {
             //ctx.textSize(fValue);
         }
 
-        void loadSelfFromChunk(const ByteSpan& inChunk)
+        void loadSelfFromChunk(const ByteSpan& inChunk) override
         {
             fValue = parseDimension(inChunk).calculatePixels(96);
             set(true);
@@ -306,7 +306,7 @@ enum class ALIGNMENT : unsigned
             //ctx.textAlign(fValue, ALIGNMENT::BASELINE);
         }
 
-        void loadSelfFromChunk(const ByteSpan& inChunk)
+        void loadSelfFromChunk(const ByteSpan& inChunk) override
         {
             if (inChunk == "start")
                 fValue = ALIGNMENT::START;
@@ -356,7 +356,7 @@ enum class ALIGNMENT : unsigned
             //ctx.textAlign(fValue, ALIGNMENT::BASELINE);
         }
 
-        void loadSelfFromChunk(const ByteSpan& inChunk)
+        void loadSelfFromChunk(const ByteSpan& inChunk) override
         {
             if (inChunk == "center")
 				fValue = ALIGNMENT::MIDDLE;
@@ -636,7 +636,7 @@ namespace svg2b2d {
             }
         }
         
-        void loadSelfFromChunk (const ByteSpan& inChunk)
+        void loadSelfFromChunk (const ByteSpan& inChunk) override
         {
             BLRgba32 c{};
             
@@ -781,7 +781,7 @@ namespace svg2b2d {
 			ctx.setFillRule(fValue);
         }
 
-        void loadSelfFromChunk(const ByteSpan& inChunk)
+        void loadSelfFromChunk(const ByteSpan& inChunk) override
         {
             ByteSpan s = chunk_trim(inChunk, wspChars);
 
@@ -838,7 +838,7 @@ namespace svg2b2d {
 			ctx.setStrokeWidth(fWidth);
 		}
 
-		void loadSelfFromChunk(const ByteSpan& inChunk)
+		void loadSelfFromChunk(const ByteSpan& inChunk) override
 		{
 			fWidth = toNumber(inChunk);
 			set(true);
@@ -885,7 +885,7 @@ namespace svg2b2d {
 			ctx.setStrokeMiterLimit(fMiterLimit);
 		}
         
-		void loadSelfFromChunk(const ByteSpan& inChunk)
+		void loadSelfFromChunk(const ByteSpan& inChunk) override
 		{
 			fMiterLimit = toNumber(inChunk);
 			fMiterLimit = clamp((float)fMiterLimit, 1.0f, 10.0f);
@@ -938,7 +938,7 @@ namespace svg2b2d {
             ctx.setStrokeCaps(fLineCap);
 		}
 
-		void loadSelfFromChunk(const ByteSpan& inChunk)
+		void loadSelfFromChunk(const ByteSpan& inChunk) override
 		{
             ByteSpan s = chunk_trim(inChunk, wspChars);
 
@@ -994,7 +994,7 @@ namespace svg2b2d {
 			ctx.setStrokeJoin(fLineJoin);
         }
         
-        void loadSelfFromChunk(const ByteSpan& inChunk)
+        void loadSelfFromChunk(const ByteSpan& inChunk) override
         {
             ByteSpan s = chunk_trim(inChunk, wspChars);
 
@@ -1070,7 +1070,7 @@ namespace svg2b2d {
         double width() const { return fRect.w; }
         double height() const {return fRect.h;}
         
-        void loadSelfFromChunk(const ByteSpan& inChunk)
+        void loadSelfFromChunk(const ByteSpan& inChunk) override
         {
 			ByteSpan s = inChunk;
 			ByteSpan numChunk;

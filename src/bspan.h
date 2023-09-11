@@ -139,14 +139,14 @@ namespace svg2b2d {
 		static inline int comparen(const ByteSpan& a, const ByteSpan& b, int n) noexcept
 		{
 			size_t maxBytes = a.size() < b.size() ? a.size() : b.size();
-			if (maxBytes > n)
+			if (static_cast<int>(maxBytes) > n)
 				maxBytes = n;
 			return memcmp(a.fStart, b.fStart, maxBytes);
 		}
 
 		static inline int comparen_cstr(const ByteSpan& a, const char* b, int n) noexcept
 		{
-			size_t maxBytes = a.size() < n ? a.size() : n;
+			size_t maxBytes = std::ssize(a) < n ? a.size() : n;
 			return memcmp(a.fStart, b, maxBytes);
 		}
 
