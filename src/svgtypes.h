@@ -1081,6 +1081,7 @@ namespace svg2b2d {
 			fRect.y = nextNumber(s, numDelims);
 			fRect.w = nextNumber(s, numDelims);
 			fRect.h = nextNumber(s, numDelims);
+            set(true);
         }
 
         static SVGViewbox createFromChunk(IMapSVGNodes* root, const ByteSpan& inChunk)
