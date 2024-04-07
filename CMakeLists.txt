@@ -22,7 +22,7 @@ target_link_libraries(svg2b2d PUBLIC
 add_executable(svg2b2d_genimage
 	projects/genimage/svg2png.cpp
 )
-target_link_libraries(svg2b2d_genimage
+target_link_libraries(svg2b2d_genimage PRIVATE
 	svg2b2d
 )
 target_include_directories(svg2b2d_genimage PRIVATE
@@ -33,7 +33,7 @@ target_include_directories(svg2b2d_genimage PRIVATE
 add_executable(svg2b2d_pullxml
 	projects/pullxml/pullxml.cpp
 )
-target_link_libraries(svg2b2d_pullxml
+target_link_libraries(svg2b2d_pullxml PRIVATE
 	svg2b2d
 )
 target_include_directories(svg2b2d_pullxml PRIVATE
