@@ -440,9 +440,9 @@ namespace svg2b2d {
         copy_to_cstr(str, 63, chunk);
 
         unsigned int r = 0, g = 0, b = 0;
-        if (sscanf_s(str, "#%2x%2x%2x", &r, &g, &b) == 3)		// 2 digit hex
+        if (sscanf(str, "#%2x%2x%2x", &r, &g, &b) == 3)		// 2 digit hex
             return BLRgba32(r, g, b);
-        if (sscanf_s(str, "#%1x%1x%1x", &r, &g, &b) == 3)		// 1 digit hex, e.g. #abc -> 0xccbbaa
+        if (sscanf(str, "#%1x%1x%1x", &r, &g, &b) == 3)		// 1 digit hex, e.g. #abc -> 0xccbbaa
             return BLRgba32(r * 17, g * 17, b * 17);			    // same effect as (r<<4|r), (g<<4|g), ..
 
         // if not one of those cases, just return a mid-gray
