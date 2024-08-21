@@ -133,9 +133,6 @@ namespace svg2b2d
             *p++ = (c << 6u) | (d >> 0u);
             ++s;
         }
-
-        return { startAt, p };
-
     }
 
     /** Lookup table that converts a integer to base64 digit. */
