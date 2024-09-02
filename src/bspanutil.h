@@ -7,6 +7,7 @@
 #include "bspan.h"
 #include "charset.h"
 
+#include <cmath>
 
 
 
