@@ -3,7 +3,7 @@
 # 1) Blend2d v0.10 or newer
 #    We assume that Blend2D is provided in some manner by the calling context
 #
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.12..3.31)
 
 project(svg2b2d CXX)
 
