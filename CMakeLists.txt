@@ -15,7 +15,7 @@ target_include_directories(svg2b2d PUBLIC
 	src/
 )
 target_link_libraries(svg2b2d PUBLIC 
-    Blend2D::Blend2D
+    blend2d::blend2d
 )
 
 # Gen-Image Executable
