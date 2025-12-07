@@ -298,10 +298,10 @@ namespace svg2b2d {
 			// don't draw transparent fill styles so we can use BL_COMP_OP_SRC_OVER
 			auto transparent_fill = [&]{
 				auto style = BLVar {};
-				ctx.getFillStyle(style);
-				if (style.isRgba32()) {
+				ctx.get_fill_style(style);
+				if (style.is_rgba32()) {
 					auto color = BLRgba32 {};
-					style.toRgba32(&color);
+					style.to_rgba32(&color);
 
 					if (color.a() == 0) {
 						return true;
@@ -311,9 +311,9 @@ namespace svg2b2d {
 			}();
 
 			if (!transparent_fill) {
-				ctx.fillPath(fPath);
+				ctx.fill_path(fPath);
 			}
-			ctx.strokePath(fPath);
+			ctx.stroke_path(fPath);
 		}
 	};
 	
@@ -329,7 +329,7 @@ namespace svg2b2d {
 		{
 			fPath.clear();
 			fGeometry = BLLine(x, y, w, h);
-			fPath.addLine(fGeometry);
+			fPath.add_line(fGeometry);
 		}
 		
 		void loadSelfFromXml(const XmlElement& elem) override 
@@ -341,7 +341,7 @@ namespace svg2b2d {
 			fGeometry.x1 = parseDimension(elem.getAttribute("x2")).calculatePixels();
 			fGeometry.y1 = parseDimension(elem.getAttribute("y2")).calculatePixels();
 
-			fPath.addLine(fGeometry);
+			fPath.add_line(fGeometry);
 		}
 
 		static std::shared_ptr<SVGLine> createFromXml(IMapSVGNodes *iMap, const XmlElement& elem)
@@ -375,11 +375,11 @@ namespace svg2b2d {
 			{
 				fGeometry.rx = parseDimension(elem.getAttribute("rx")).calculatePixels();
 				fGeometry.ry = parseDimension(elem.getAttribute("ry")).calculatePixels();
-				fPath.addRoundRect(fGeometry);
+				fPath.add_round_rect(fGeometry);
 			}
 			else
 			{
-				fPath.addRect(fGeometry.x, fGeometry.y, fGeometry.w, fGeometry.h);
+				fPath.add_rect(fGeometry.x, fGeometry.y, fGeometry.w, fGeometry.h);
 			}
 		}
 		
@@ -407,7 +407,7 @@ namespace svg2b2d {
 			fCircle.cy = parseDimension(elem.getAttribute("cy")).calculatePixels();
 			fCircle.r = parseDimension(elem.getAttribute("r")).calculatePixels();
 
-			fPath.addCircle(fCircle);
+			fPath.add_circle(fCircle);
 		}
 
 		static std::shared_ptr<SVGCircle> createFromXml(IMapSVGNodes* iMap, const XmlElement& elem)
@@ -435,7 +435,7 @@ namespace svg2b2d {
 			fGeometry.rx = parseDimension(elem.getAttribute("rx")).calculatePixels();
 			fGeometry.ry = parseDimension(elem.getAttribute("ry")).calculatePixels();
 
-			fPath.addEllipse(fGeometry);
+			fPath.add_ellipse(fGeometry);
 		}
 
 		static std::shared_ptr<SVGEllipse> createFromXml(IMapSVGNodes* iMap, const XmlElement& elem)
@@ -460,10 +460,10 @@ namespace svg2b2d {
 			auto points = elem.getAttribute("points");
 			auto pts = parsePoints(points);
 
-			fPath.moveTo(pts[0].x, pts[0].y);
+			fPath.move_to(pts[0].x, pts[0].y);
 			for (int i = 1; i < std::ssize(pts); i++)
 			{
-				fPath.lineTo(pts[i].x, pts[i].y);
+				fPath.line_to(pts[i].x, pts[i].y);
 			}
 
 			
@@ -491,10 +491,10 @@ namespace svg2b2d {
 			auto points = elem.getAttribute("points");
 			auto pts = parsePoints(points);
 
-			fPath.moveTo(pts[0]);
+			fPath.move_to(pts[0]);
 			for (int i = 1; i < std::ssize(pts); i++)
 			{
-				fPath.lineTo(pts[i]);
+				fPath.line_to(pts[i]);
 			}
 			fPath.close();
 			
@@ -575,7 +575,7 @@ namespace svg2b2d {
 
 				if (outData)
 				{
-					BLResult res = img.readFromData(outData.fStart, chunk_size(outData));
+					BLResult res = img.read_from_data(outData.fStart, chunk_size(outData));
 					success = (res == BL_SUCCESS);
 					printf("parseImage, readFromData: %d  %dX%d\n", res, img.size().w, img.size().h);
 				}
@@ -612,9 +612,9 @@ namespace svg2b2d {
 
 		const BLVar& getVariant() override
 		{
-			if (fVar.isNull())
+			if (fVar.is_null())
 			{
-				blVarAssignWeak(&fVar, &fImage);
+                bl_var_assign_weak(&fVar, &fImage);
 			}
 
 			return fVar;
@@ -622,13 +622,13 @@ namespace svg2b2d {
 		
 		void drawSelf(IRender& ctx) const override
 		{
-			if (fImage.empty())
+			if (fImage.is_empty())
 				return;
 			
 			BLRect dst{ fX,fY,fWidth,fHeight };
 			BLRectI srcArea{ (int)0,(int)0,(int)fImage.size().w,fImage.size().h };
 
-			ctx.blitImage(dst, fImage, srcArea);
+			ctx.blit_image(dst, fImage, srcArea);
 		}
 
 		void loadSelfFromXml(const XmlElement& elem) override
@@ -706,12 +706,12 @@ namespace svg2b2d {
 			// traverse down our fNodes, until we find
 			// something that reports other than null
 			// and return that.
-			if (fVar.isNull())
+			if (fVar.is_null())
 			{
 				for (auto& node : fNodes)
 				{
 					auto& var = node->getVariant();
-					if (!var.isNull())
+					if (!var.is_null())
 					{
 						return node->getVariant();
 					}
@@ -941,7 +941,7 @@ namespace svg2b2d {
 		const BLVar& getVariant() override
 		{
 			// This should be called
-			if (fVar.isNull())
+			if (fVar.is_null())
 			{
 				fVar = fPattern;
 			}
@@ -960,7 +960,7 @@ namespace svg2b2d {
 		{
 			SVGCompoundNode::loadSelfFromXml(elem);
 
-			fPattern.setExtendMode(BL_EXTEND_MODE_PAD);
+			fPattern.set_extend_mode(BL_EXTEND_MODE_PAD);
 			fWidth = parseDimension(elem.getAttribute("width")).calculatePixels(1,0,96);
 			fHeight = parseDimension(elem.getAttribute("height")).calculatePixels(1,0,96);
 
@@ -968,7 +968,7 @@ namespace svg2b2d {
 			{
 				auto  tform = SVGTransform::createFromXml(root(), "patternTransform", elem);
 				fTransform = tform->fTransform;
-				fPattern.setTransform(fTransform);
+				fPattern.set_transform(fTransform);
 			}
 		}
 
@@ -1003,7 +1003,7 @@ namespace svg2b2d {
 						
 						if (avar.type() == BL_OBJECT_TYPE_IMAGE)
 						{
-							fPattern.setImage(avar.as<BLImage>());
+							fPattern.set_image(avar.as<BLImage>());
 						}
 					}
 				}
@@ -1023,7 +1023,7 @@ namespace svg2b2d {
 
 		SVGGradient(IMapSVGNodes* root) :SVGCompoundNode(root) 
 		{
-			fGradient.setExtendMode(BL_EXTEND_MODE_PAD);
+			fGradient.set_extend_mode(BL_EXTEND_MODE_PAD);
 		}
 		SVGGradient(const SVGGradient& other) = delete;
 		SVGGradient operator=(const SVGGradient& other) = delete;
@@ -1033,7 +1033,7 @@ namespace svg2b2d {
 			//auto nStops = fGradient.size();
 			//printf("STOPS: %d\n", nStops);
 			
-			blVarAssignWeak(&fGradientVar, &fGradient);
+			bl_var_assign_weak(&fGradientVar, &fGradient);
 			return fGradientVar;
 		}
 		
@@ -1065,7 +1065,7 @@ namespace svg2b2d {
 					const BLVar& aVar = node->getVariant();
 
 
-					if (aVar.isGradient())
+					if (aVar.is_gradient())
 						fGradient = aVar.as<BLGradient>();
 				}
 			}
@@ -1131,10 +1131,10 @@ namespace svg2b2d {
 				// Convert the variant color to a BLRgba32
 				BLVar aVar = c->getVariant();
 				uint32_t colorValue = 0;
-				blVarToRgba32(&aVar, &colorValue);
+				bl_var_to_rgba32(&aVar, &colorValue);
 				BLRgba32 acolor(colorValue);
 
-				fGradient.addStop(offset, acolor);
+				fGradient.add_stop(offset, acolor);
 			}
 		}
 		
@@ -1144,7 +1144,7 @@ namespace svg2b2d {
 	{
 		SVGLinearGradient(IMapSVGNodes* root) :SVGGradient(root) 
 		{
-			fGradient.setType(BL_GRADIENT_TYPE_LINEAR);
+			fGradient.set_type(BL_GRADIENT_TYPE_LINEAR);
 		}
 		
 		void loadSelfFromXml(const XmlElement& elem) override
@@ -1161,14 +1161,14 @@ namespace svg2b2d {
 
 			// gradientUnits needs to be read in here
 			BLLinearGradientValues gradientValues = { x1, y1, x2, y2 };
-			fGradient.setValues(gradientValues);
+			fGradient.set_values(gradientValues);
 
 
 			// Get the transform
 			if (elem.getAttribute("gradientTransform"))
 			{
 				auto  tform = SVGTransform::createFromXml(root(), "gradientTransform", elem);
-				fGradient.setTransform(tform->getTransform());
+				fGradient.set_transform(tform->getTransform());
 			}
 		}
 
@@ -1180,7 +1180,7 @@ namespace svg2b2d {
 
 		SVGRadialGradient(IMapSVGNodes* root) :SVGGradient(root) 
 		{
-			fGradient.setType(BL_GRADIENT_TYPE_RADIAL);
+			fGradient.set_type(BL_GRADIENT_TYPE_RADIAL);
 		}
 
 
@@ -1214,7 +1214,7 @@ namespace svg2b2d {
 			if (elem.getAttribute("fy"))
 				gradientValues.y1 = parseDimension(elem.getAttribute("fy")).calculatePixels(96);
 			
-			fGradient.setValues(gradientValues);
+			fGradient.set_values(gradientValues);
 			
 			// gradientUnits needs to be read in here
 
@@ -1223,7 +1223,7 @@ namespace svg2b2d {
 			if (elem.getAttribute("gradientTransform"))
 			{
 				auto  tform = SVGTransform::createFromXml(root(), "gradientTransform", elem);
-				fGradient.setTransform(tform->getTransform());
+				fGradient.set_transform(tform->getTransform());
 			}
 
 		}

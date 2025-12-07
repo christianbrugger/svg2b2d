@@ -1,6 +1,6 @@
 #pragma once
 
-#include "blend2d.h"
+#include "blend2d/blend2d.h"
 #include "charset.h"
 #include "bspanutil.h"
 
@@ -89,9 +89,9 @@ namespace svg2b2d {
 				return false;
 
 			if (iteration == 0)
-				apath.moveTo(x, y);
+				apath.move_to(x, y);
 			else
-				apath.lineTo(x, y);
+				apath.line_to(x, y);
 
 			iteration++;
 
@@ -109,12 +109,12 @@ namespace svg2b2d {
 				return false;
 
 			BLPoint lastPos{};
-			apath.getLastVertex(&lastPos);
+			apath.get_last_vertex(&lastPos);
 
 			if (iteration == 0)
-				apath.moveTo(lastPos.x + x, lastPos.y + y);
+				apath.move_to(lastPos.x + x, lastPos.y + y);
 			else
-				apath.lineTo(lastPos.x + x, lastPos.y + y);
+				apath.line_to(lastPos.x + x, lastPos.y + y);
 
 			iteration++;
 
@@ -131,7 +131,7 @@ namespace svg2b2d {
 			if (!parseNextNumber(s, y))
 				return false;
 
-			apath.lineTo(x, y);
+			apath.line_to(x, y);
 
 			iteration++;
 
@@ -149,9 +149,9 @@ namespace svg2b2d {
 				return false;
 
 			BLPoint lastPos{};
-			apath.getLastVertex(&lastPos);
+			apath.get_last_vertex(&lastPos);
 
-			apath.lineTo(lastPos.x + x, lastPos.y + y);
+			apath.line_to(lastPos.x + x, lastPos.y + y);
 
 			iteration++;
 
@@ -166,8 +166,8 @@ namespace svg2b2d {
 				return false;
 
 			BLPoint lastPos{};
-			apath.getLastVertex(&lastPos);
-			apath.lineTo(x, lastPos.y);
+			apath.get_last_vertex(&lastPos);
+			apath.line_to(x, lastPos.y);
 
 			iteration++;
 
@@ -182,8 +182,8 @@ namespace svg2b2d {
 				return false;
 
 			BLPoint lastPos{};
-			apath.getLastVertex(&lastPos);
-			apath.lineTo(lastPos.x + x, lastPos.y);
+			apath.get_last_vertex(&lastPos);
+			apath.line_to(lastPos.x + x, lastPos.y);
 
 			iteration++;
 
@@ -198,8 +198,8 @@ namespace svg2b2d {
 				return false;
 
 			BLPoint lastPos{};
-			apath.getLastVertex(&lastPos);
-			apath.lineTo(lastPos.x, y);
+			apath.get_last_vertex(&lastPos);
+			apath.line_to(lastPos.x, y);
 
 			iteration++;
 
@@ -214,8 +214,8 @@ namespace svg2b2d {
 				return false;
 
 			BLPoint lastPos{};
-			apath.getLastVertex(&lastPos);
-			apath.lineTo(lastPos.x, lastPos.y + y);
+			apath.get_last_vertex(&lastPos);
+			apath.line_to(lastPos.x, lastPos.y + y);
 
 			iteration++;
 
@@ -239,7 +239,7 @@ namespace svg2b2d {
 			if (!parseNextNumber(s, y2))
 				return false;
 
-			apath.quadTo(x1, y1, x2, y2);
+			apath.quad_to(x1, y1, x2, y2);
 
 			iteration++;
 
@@ -264,9 +264,9 @@ namespace svg2b2d {
 				return false;
 
 			BLPoint lastPos{};
-			apath.getLastVertex(&lastPos);
+			apath.get_last_vertex(&lastPos);
 
-			apath.quadTo(lastPos.x + x1, lastPos.y + y1, lastPos.x + x2, lastPos.y + y2);
+			apath.quad_to(lastPos.x + x1, lastPos.y + y1, lastPos.x + x2, lastPos.y + y2);
 
 			iteration++;
 
@@ -284,7 +284,7 @@ namespace svg2b2d {
 			if (!parseNextNumber(s, y2))
 				return false;
 
-			apath.smoothQuadTo(x2, y2);
+			apath.smooth_quad_to(x2, y2);
 
 			iteration++;
 
@@ -303,9 +303,9 @@ namespace svg2b2d {
 				return false;
 
 			BLPoint lastPos{};
-			apath.getLastVertex(&lastPos);
+			apath.get_last_vertex(&lastPos);
 
-			apath.smoothQuadTo(lastPos.x + x2, lastPos.y + y2);
+			apath.smooth_quad_to(lastPos.x + x2, lastPos.y + y2);
 
 			iteration++;
 
@@ -335,7 +335,7 @@ namespace svg2b2d {
 			if (!parseNextNumber(s, y3))
 				return false;
 
-			apath.cubicTo(x1, y1, x2, y2, x3, y3);
+			apath.cubic_to(x1, y1, x2, y2, x3, y3);
 
 			iteration++;
 
@@ -366,9 +366,9 @@ namespace svg2b2d {
 				return false;
 
 			BLPoint lastPos{};
-			apath.getLastVertex(&lastPos);
+			apath.get_last_vertex(&lastPos);
 
-			apath.cubicTo(lastPos.x + x1, lastPos.y + y1, lastPos.x + x2, lastPos.y + y2, lastPos.x + x3, lastPos.y + y3);
+			apath.cubic_to(lastPos.x + x1, lastPos.y + y1, lastPos.x + x2, lastPos.y + y2, lastPos.x + x3, lastPos.y + y3);
 
 			iteration++;
 
@@ -392,7 +392,7 @@ namespace svg2b2d {
 			if (!parseNextNumber(s, y3))
 				return false;
 
-			apath.smoothCubicTo(x2, y2, x3, y3);
+			apath.smooth_cubic_to(x2, y2, x3, y3);
 
 			iteration++;
 
@@ -417,9 +417,9 @@ namespace svg2b2d {
 				return false;
 
 			BLPoint lastPos{};
-			apath.getLastVertex(&lastPos);
+			apath.get_last_vertex(&lastPos);
 
-			apath.smoothCubicTo(lastPos.x + x2, lastPos.y + y2, lastPos.x + x3, lastPos.y + y3);
+			apath.smooth_cubic_to(lastPos.x + x2, lastPos.y + y2, lastPos.x + x3, lastPos.y + y3);
 
 			iteration++;
 
@@ -457,7 +457,7 @@ namespace svg2b2d {
 			bool swp = sweepFlag > 0.5f;
 			double xrot = radians(xAxisRotation);
 
-			apath.ellipticArcTo(BLPoint(rx, ry), xrot, larc, swp, BLPoint(x, y));
+			apath.elliptic_arc_to(BLPoint(rx, ry), xrot, larc, swp, BLPoint(x, y));
 
 			iteration++;
 
@@ -495,9 +495,9 @@ namespace svg2b2d {
 			double xrot = radians(xAxisRotation);
 
 			BLPoint lastPos{};
-			apath.getLastVertex(&lastPos);
+			apath.get_last_vertex(&lastPos);
 
-			apath.ellipticArcTo(BLPoint(rx, ry), xrot, larc, swp, BLPoint(lastPos.x + x, lastPos.y + y));
+			apath.elliptic_arc_to(BLPoint(rx, ry), xrot, larc, swp, BLPoint(lastPos.x + x, lastPos.y + y));
 
 			iteration++;
 

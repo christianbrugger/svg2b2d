@@ -203,7 +203,7 @@ namespace svg2b2d {
         void drawSelf(IRender& ctx) const override
         {
 			SVGVisualProperty::drawSelf(ctx);
-			ctx.setFillAlpha(fValue);
+			ctx.set_fill_alpha(fValue);
         }
 
 		void loadSelfFromChunk(const ByteSpan& inChunk) override
@@ -550,7 +550,7 @@ namespace svg2b2d {
         {
             SVGVisualProperty::operator=(rhs);
 
-            blVarAssignWeak(&fPaint, &rhs.fPaint);
+            bl_var_assign_weak(&fPaint, &rhs.fPaint);
             fExplicitNone = rhs.fExplicitNone;
             fPaintFor = rhs.fPaintFor;
 
@@ -566,11 +566,11 @@ namespace svg2b2d {
         void setOpacity(double opacity)
         {
             uint32_t outValue;
-            if (BL_SUCCESS == blVarToRgba32(&fPaint, &outValue))
+            if (BL_SUCCESS == bl_var_to_rgba32(&fPaint, &outValue))
             {
                 BLRgba32 newColor(outValue);
                 newColor.setA((uint32_t)(opacity * 255));
-                blVarAssignRgba32(&fPaint, newColor.value);
+                bl_var_assign_rgba32(&fPaint, newColor.value);
             }
         }
 
@@ -583,16 +583,16 @@ namespace svg2b2d {
 
             case SVG_PaintForFill:
                 if (fExplicitNone)
-                    ctx.setFillStyle(BLRgba32(0));
+                    ctx.set_fill_style(BLRgba32(0));
                 else
-                    ctx.setFillStyle(fPaint);
+                    ctx.set_fill_style(fPaint);
                 break;
 
             case SVG_PaintForStroke:
                 if (fExplicitNone)
-					ctx.setStrokeStyle(BLRgba32(0));
+					ctx.set_stroke_style(BLRgba32(0));
                 else
-                    ctx.setStrokeStyle(fPaint);
+                    ctx.set_stroke_style(fPaint);
                 break;
             }
 
@@ -630,7 +630,7 @@ namespace svg2b2d {
                 {
                     const BLVar& aVar = node->getVariant();
 
-                    auto res = blVarAssignWeak(&fPaint, &aVar);
+                    auto res = bl_var_assign_weak(&fPaint, &aVar);
                     if (res == BL_SUCCESS)
                         set(true);
                 }
@@ -641,7 +641,7 @@ namespace svg2b2d {
         {
             BLRgba32 c{};
             
-            blVarAssignRgba32(&fPaint, c.value);
+            bl_var_assign_rgba32(&fPaint, c.value);
 
             ByteSpan str = inChunk;
             ByteSpan rgbStr = chunk_from_cstr("rgb(");
@@ -653,13 +653,13 @@ namespace svg2b2d {
             if (len >= 1 && *str == '#')
             {
                 c = parseColorHex(str);
-                blVarAssignRgba32(&fPaint, c.value);
+                bl_var_assign_rgba32(&fPaint, c.value);
                 set(true);
             }
             else if (chunk_starts_with(str, rgbStr) || chunk_starts_with(str, rgbaStr))
             {
                 c = parseColorRGB(str);
-                blVarAssignRgba32(&fPaint, c.value);
+                bl_var_assign_rgba32(&fPaint, c.value);
                 set(true);
             }
             else if (chunk_starts_with_cstr(str, "url(")) 
@@ -678,7 +678,7 @@ namespace svg2b2d {
                 else if (svg::colors.contains(cName))
                 {
                     c = svg::colors[cName];
-                    blVarAssignRgba32(&fPaint, c.value);
+                    bl_var_assign_rgba32(&fPaint, c.value);
                     set(true);
                 }
                 else {
@@ -686,7 +686,7 @@ namespace svg2b2d {
                     // or a color function we don't support yet
                     // so set a default gray color
                     c = BLRgba32(128, 128, 128);
-                    blVarAssignRgba32(&fPaint, c.value);
+                    bl_var_assign_rgba32(&fPaint, c.value);
                     set(true);
                 }
             }
@@ -779,7 +779,7 @@ namespace svg2b2d {
 
         void drawSelf(IRender& ctx) const override
         {
-			ctx.setFillRule(fValue);
+			ctx.set_fill_rule(fValue);
         }
 
         void loadSelfFromChunk(const ByteSpan& inChunk) override
@@ -836,7 +836,7 @@ namespace svg2b2d {
 
 		void drawSelf(IRender& ctx) const override
 		{
-			ctx.setStrokeWidth(fWidth);
+			ctx.set_stroke_width(fWidth);
 		}
 
 		void loadSelfFromChunk(const ByteSpan& inChunk) override
@@ -883,7 +883,7 @@ namespace svg2b2d {
 
 		void drawSelf(IRender& ctx) const override
 		{
-			ctx.setStrokeMiterLimit(fMiterLimit);
+			ctx.set_stroke_miter_limit(fMiterLimit);
 		}
         
 		void loadSelfFromChunk(const ByteSpan& inChunk) override
@@ -936,7 +936,7 @@ namespace svg2b2d {
 
 		void drawSelf(IRender& ctx) const override
 		{
-            ctx.setStrokeCaps(fLineCap);
+            ctx.set_stroke_caps(fLineCap);
 		}
 
 		void loadSelfFromChunk(const ByteSpan& inChunk) override
@@ -992,7 +992,7 @@ namespace svg2b2d {
         
         void drawSelf(IRender& ctx) const override
         {
-			ctx.setStrokeJoin(fLineJoin);
+			ctx.set_stroke_join(fLineJoin);
         }
         
         void loadSelfFromChunk(const ByteSpan& inChunk) override
@@ -1261,7 +1261,7 @@ namespace svg2b2d
         ByteSpan s = inChunk;
         s = parseTransformArgs(s, args, 1, na);
 
-        xform.resetToSkewing(radians(args[0]), 0.0f);
+        xform.reset_to_skewing(radians(args[0]), 0.0f);
 
         return s;
     }
@@ -1273,7 +1273,7 @@ namespace svg2b2d
         ByteSpan s = inChunk;
         s = parseTransformArgs(s, args, 1, na);
 
-        xform.resetToSkewing(0.0f, radians(args[0]));
+        xform.reset_to_skewing(0.0f, radians(args[0]));
 
         return s;
     }
@@ -1384,7 +1384,7 @@ namespace svg2b2d
 
         void drawSelf(IRender& ctx) const override
         {
-			ctx.applyTransform(fTransform);
+			ctx.apply_transform(fTransform);
         }
 
         static std::shared_ptr<SVGTransform> createFromChunk(IMapSVGNodes* root, const std::string& name, const ByteSpan& inChunk)

@@ -11,7 +11,7 @@ The main interface is in svg.h
 ```C
 #pragma once
 
-#include "blend2d.h"
+#include "blend2d/blend2d.h"
 
 
 #ifdef __cplusplus
@@ -28,7 +28,7 @@ bool parseSVG(const void *bytes, const size_t sz, BLImage &outImage);
 The process of using it is as simple as this:
 
 ```C
-#include "blend2d.h"
+#include "blend2d/blend2d.h"
 #include "mmap.h"
 #include "svg.h"
 
